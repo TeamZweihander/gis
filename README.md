@@ -9,7 +9,7 @@ The Zsweihander-GIS is equipped with a series of functionality such as displayin
 ## Team Zweihander GIS :red_circle:
 
 Team page for the third assignment of COS 730, team Zweihander GIS.
-<a href="http://cs.up.ac.za/teams/pages/manage/114/4" target="_blank">Team Repository</a>
+- <a href="http://cs.up.ac.za/teams/pages/manage/114/4" target="_blank">Team Repository</a>
 
 ### Team Github Repository
 - <a href="https://github.com/Dieumerci/GIS-Cos730" target="_blank">Team Repository</a>
