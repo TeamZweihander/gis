@@ -1,0 +1,2 @@
+2017-04-28 18:32:22,989 [Worker-1] INFO  c.g.t.t.d.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2017-04-28 18:34:22,750 [Worker-2] WARN  org.eclipse.jgit.util.FS_Win32 - null
