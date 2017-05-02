@@ -2,6 +2,7 @@ package com.zweihander.navup.gis.domain;
 
 import java.util.List;
 
+
 /**
  *
  * @author Zweihander-GIS
@@ -9,33 +10,29 @@ import java.util.List;
 
 public class GISDataObject 
 {
-   private double[] GPSCoord = new double[2];
+   private String GPSCoordinates = null;
    private String objectName;
    private List<String> GPSTags;
    
    public GISDataObject()
    {
        GPSTags = null;
-       
-       for(int i = 0;i<GPSCoord.length;i++)
-       {
-           GPSCoord[i] = 0.0;
-       }
+       objectName = "";
+       GPSCoordinates = "0.0,0.0";
    }
-   public GISDataObject(double latitude,double longitude, String mObjectName,List<String> tags)
+   public GISDataObject(String mGPSCoordinates, String mObjectName,List<String> tags)
    {
-       GPSCoord[0] = latitude;
-       GPSCoord[1] = longitude;
+       GPSCoordinates = mGPSCoordinates;
        objectName = mObjectName ;
        GPSTags = tags;
    }
-   public double[] getGPSCoord() 
+   public String getGPSCoord() 
    {
-        return this.GPSCoord;
+        return this.GPSCoordinates;
    }
-   public void setGPSCoord(double[] GPSCoord)
+   public void setGPSCoord(String mGPSCoordinates)
    {
-        this.GPSCoord = GPSCoord;
+        this.GPSCoordinates = mGPSCoordinates;
    }
    public List<String> getGPSTags() 
    {

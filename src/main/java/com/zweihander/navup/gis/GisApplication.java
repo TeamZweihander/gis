@@ -1,11 +1,14 @@
 package com.zweihander.navup.gis;
 
 
+import com.zweihander.navup.gis.controllers.GISController;
+import com.zweihander.navup.gis.domain.GISDataObject;
+import com.zweihander.navup.gis.request.GISRequest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.postgresql.*;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -22,6 +25,8 @@ import java.util.List;
 @EnableAutoConfiguration
 @ComponentScan("com.zweihander.navup.gis")
 public class GisApplication {
+    
+        
 	public static void createBuild()
 	{
 		BufferedReader  reader = null;
@@ -56,8 +61,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
-	            "postgres", "admin");
+	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
+	            "postgres", "root");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE BUILD " +
@@ -122,8 +127,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
-	            "postgres", "admin");
+	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
+	            "postgres", "root");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE BUILDING_ENTRANCES " +
@@ -184,8 +189,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
-	            "postgres", "admin");
+	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
+	            "postgres", "root");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE CAMPUS_BUILDINGS " +
@@ -248,8 +253,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
-	            "postgres", "admin");
+	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
+	            "postgres", "root");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE LECTURE_HALLS " +
@@ -314,8 +319,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
-	            "postgres", "admin");
+	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
+	            "postgres", "root");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE LECTURE_HALLS " +
@@ -383,8 +388,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
-	            "postgres", "admin");
+	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
+	            "postgres", "root");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE STAIRS " +
@@ -452,8 +457,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
-	            "postgres", "admin");
+	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
+	            "postgres", "root");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE LECTURE_WALLS " +
@@ -490,7 +495,15 @@ public class GisApplication {
 	}
 
 	public static void main(String[] args) {
-		populateDatabase();
+		//populateDatabase();
+                GISController controller = new GISController();
+                GISDataObject GISObject = new GISDataObject();
+                GISObject.setObjectName("Natural sciences");
+                GISObject.setGPSCoord("23.65775,21.54675");
+                GISRequest request = new GISRequest();
+                request.setmGISDataObject(GISObject);
+                controller.getAllGISDataObjects();
+                controller.addGISDataObject(request);
 		SpringApplication.run(GisApplication.class, args);
 	}
 }
