@@ -82,7 +82,7 @@ public class GisApplication {
 	         c.close();
 	       } catch ( Exception e ) {
 	         System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-	         System.exit(0);
+	         //System.exit(0);
 	       }
 	       System.out.println("Table created successfully");
 	}
@@ -113,10 +113,7 @@ public class GisApplication {
 			    	 entranceNames.add(oneSeparatedLine[4]);
 			     }
 			   }
-			for (int i = 0; i < entranceNames.size(); i++)
-			{
-				System.out.println("Building: " + entranceNames.get(i) + " Latitude: " + latitude.get(i));
-			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -150,7 +147,7 @@ public class GisApplication {
 	         c.close();
 	       } catch ( Exception e ) {
 	         System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-	         System.exit(0);
+	         //System.exit(0);
 	       }
 	       System.out.println("Table created successfully");
 	}
@@ -209,7 +206,7 @@ public class GisApplication {
 	         c.close();
 	       } catch ( Exception e ) {
 	         System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-	         System.exit(0);
+	         //System.exit(0);
 	       }
 	       System.out.println("Table created successfully");
 	}
@@ -275,10 +272,13 @@ public class GisApplication {
 	         c.close();
 	       } catch ( Exception e ) {
 	         System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-	         System.exit(0);
+	         //System.exit(0);
 	       }
 	       System.out.println("Table created successfully");
 	}
+
+    public GisApplication() {
+    }
 	
 	public static void createLectureHallsL3()
 	{
@@ -341,7 +341,7 @@ public class GisApplication {
 	         c.close();
 	       } catch ( Exception e ) {
 	         System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-	         System.exit(0);
+	         //System.exit(0);
 	       }
 	       System.out.println("Table created successfully");
 	}
@@ -413,7 +413,7 @@ public class GisApplication {
 	         c.close();
 	       } catch ( Exception e ) {
 	         System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-	         System.exit(0);
+	         //System.exit(0);
 	       }
 	       System.out.println("Table created successfully");
 	}
@@ -479,10 +479,27 @@ public class GisApplication {
 	         c.close();
 	       } catch ( Exception e ) {
 	         System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-	         System.exit(0);
+	         //System.exit(0);
 	       }
 	       System.out.println("Table created successfully");
 	}
+        public static void test()
+        {
+            
+            GISController controller = new GISController();
+            List<GISDataObject> buildings = null;
+            GISDataObject building1 = new GISDataObject();
+            GISDataObject building2 = new GISDataObject();
+            building1.setObjectName("Natural sciences");
+            building1.setGPSCoord("23.65775,21.54675");
+            GISRequest request = new GISRequest();
+            request.setmGISDataObject(building1);
+            buildings = controller.getAllGISDataObjects();
+            controller.addGISDataObject(request);
+            building2 = controller.getGISObjectByCoordinates(28.2322615, -25.7550149);
+            System.out.println("Name of bulding: " +2);
+
+        }
 	public static void populateDatabase()
 	{
 		createBuild();
@@ -492,18 +509,13 @@ public class GisApplication {
 		createLectureHallsL3();
 		createLectureWalls();
 		createStairs();
+                test();
+                
 	}
 
 	public static void main(String[] args) {
-		//populateDatabase();
-                GISController controller = new GISController();
-                GISDataObject GISObject = new GISDataObject();
-                GISObject.setObjectName("Natural sciences");
-                GISObject.setGPSCoord("23.65775,21.54675");
-                GISRequest request = new GISRequest();
-                request.setmGISDataObject(GISObject);
-                controller.getAllGISDataObjects();
-                controller.addGISDataObject(request);
+		populateDatabase();
+                
 		SpringApplication.run(GisApplication.class, args);
 	}
 }

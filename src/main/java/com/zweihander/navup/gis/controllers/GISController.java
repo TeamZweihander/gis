@@ -136,7 +136,42 @@ public class GISController implements GISModule
     @RequestMapping(value ="/gis/getGISObjectByCoordinates")
     public  @ResponseBody GISDataObject  getGISObjectByCoordinates(double lattitudes,double longitude)throws GISObjectNotFoundException
     {
-       throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates. 
+        GISDataObject GISObject = new GISDataObject();
+        
+        String coordinates = lattitudes+","+longitude;
+       
+        System.out.println(coordinates);
+        int i = 0;  
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5433/postgres","postgres", "root");
+                
+            stmt = c.createStatement();
+            stmt.setMaxRows(100); // bacause of: org.postgresql.util.PSQLException: Ran out of memory retrieving query results.
+            ResultSet rs = stmt.executeQuery("select * from " + "campus_buildings"); 
+           
+            for (;;) {
+                while (rs.next()) {
+                    i++;
+                   
+                    if(rs.getString("polygons").toString() == coordinates)
+                    {
+                       GISObject.setObjectName(rs.getString("name"));
+                       GISObject.setGPSCoord(rs.getString("polygons")); 
+                    }
+                    
+                }
+                if ((stmt.getMoreResults() == false) && (stmt.getUpdateCount() == -1)) {
+                    break;
+                }           
+            }
+            id = i;
+        } catch (SQLException ex) {
+            Logger.getLogger(GISController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GISController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return GISObject;
     }
     @Override
     @RequestMapping(value ="/gis/getVenues")
