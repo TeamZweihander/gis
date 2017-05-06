@@ -20,11 +20,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 
 @EnableAutoConfiguration
 @ComponentScan("com.zweihander.navup.gis")
 public class GisApplication {
+    
+    
+        private static int id = 0;
     
         
 	public static void createBuild()
@@ -77,7 +81,7 @@ public class GisApplication {
 		                 + "VALUES (" + i + ", '" + buildingNames.get(i) + "','" + polygons.get(i) + "' );";
 		         stmt.executeUpdate(sql);
 			 }
-	         
+	         id++;
 	         stmt.close();
 	         c.close();
 	       } catch ( Exception e ) {
@@ -200,6 +204,7 @@ public class GisApplication {
 	        	 sql = "INSERT INTO CAMPUS_BUILDINGS (ID,NAME,POLYGONS) "
 		                 + "VALUES (" + i + ", '" + buildingNames.get(i) + "','" + polygons.get(i) + "' );";
 		         stmt.executeUpdate(sql);
+                         id =i ;
 			 }
 	         
 	         stmt.close();
@@ -483,23 +488,7 @@ public class GisApplication {
 	       }
 	       System.out.println("Table created successfully");
 	}
-        public static void test()
-        {
-            
-            GISController controller = new GISController();
-            List<GISDataObject> buildings = null;
-            GISDataObject building1 = new GISDataObject();
-            GISDataObject building2 = new GISDataObject();
-            building1.setObjectName("Natural sciences");
-            building1.setGPSCoord("23.65775,21.54675");
-            GISRequest request = new GISRequest();
-            request.setmGISDataObject(building1);
-            buildings = controller.getAllGISDataObjects();
-            controller.addGISDataObject(request);
-            building2 = controller.getGISObjectByCoordinates(28.2322615, -25.7550149);
-            System.out.println("Name of bulding: " +2);
-
-        }
+       
 	public static void populateDatabase()
 	{
 		createBuild();
@@ -509,13 +498,81 @@ public class GisApplication {
 		createLectureHallsL3();
 		createLectureWalls();
 		createStairs();
-                test();
                 
-	}
-
-	public static void main(String[] args) {
-		populateDatabase();
+               
+             
+        }
+        public static void main(String[] args) {
+            
+            // Populate the GIS database in bulk from csv files 
+            
+            populateDatabase();
                 
-		SpringApplication.run(GisApplication.class, args);
+                
+                
+            GISController controller = new GISController();
+            List<GISDataObject> buildings = null;
+            List<String> venues = new ArrayList();
+            Scanner input = new Scanner(System.in);
+            String buildingName = "";
+            String buildingName_venues = "";
+            
+            controller.setID(id);
+            GISDataObject building1 = new GISDataObject();
+            GISDataObject building2 = new GISDataObject();
+            GISDataObject building3 = new GISDataObject();
+            GISDataObject building4 = new GISDataObject();
+            
+            //Adding GIS objects
+            
+            building1.setObjectName("Natural sciences");
+            building1.setGPSCoord("23.6577543,21.5467523");
+            GISRequest request1 = new GISRequest();
+            request1.setmGISDataObject(building1);
+            
+            controller.addGISDataObject(request1);
+            
+            building2.setObjectName("Aula");
+            building2.setGPSCoord("24.6577553,22.5467556");
+            GISRequest request2 = new GISRequest();
+            request2.setmGISDataObject(building2);
+            
+            controller.addGISDataObject(request2);
+            
+            
+            
+            // Get all GIS objects from the database
+            
+            buildings = controller.getAllGISDataObjects();
+            
+            for(int i=0; i< buildings.size();i++)
+            {
+                System.out.println("Building name: "+buildings.get(i).getObjectName()+"  "+" Coordinates: "+buildings.get(i).getGPSCoord());
+            }
+            
+            // Search for GIS object by coordinates 
+           
+            building2 = controller.getGISObjectByCoordinates(28.2322615, -25.7550149);
+            System.out.println("Building name after search by coordinates: " +building2.getObjectName());
+            
+            System.out.println("Please enter building name: ");
+            buildingName = input.nextLine();
+            
+            building2 = controller.getGISObjectByName(buildingName);
+            System.out.println("Building name after search by name: " +building2.getObjectName());
+            
+            System.out.println("Please enter building name to get venues: ");
+            buildingName_venues = input.nextLine();
+            venues = controller.getVenues(buildingName_venues);
+            
+            System.out.println("List of venues for "+buildingName_venues);
+            for(int i=0; i< venues.size();i++)
+            {
+               System.out.println(venues.get(i)); 
+            }
+            
+            //  Search for building by name
+                
+            SpringApplication.run(GisApplication.class, args);
 	}
 }

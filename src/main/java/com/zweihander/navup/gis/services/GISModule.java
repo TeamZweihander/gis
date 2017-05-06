@@ -17,4 +17,5 @@ public interface GISModule
     public List<String> getVenues(String buildingName);
     public List<String> routesBetweenPoints(String pointACoordinates,String pointBCoordinates);
     public String getRouteDetails(String route);
+    public void setID(int id);
 }

@@ -23,12 +23,13 @@ import java.util.logging.Logger;
 @RestController
 public class GISController implements GISModule
 {
+    
     private Connection c = null;
     private Statement stmt = null;
     int id = 0;
     
     
-    @Override
+  
     @RequestMapping(value ="/gis/addGISObject")
     public GISResponse addGISDataObject(GISRequest request) 
     {
@@ -56,37 +57,48 @@ public class GISController implements GISModule
         return new GISResponse(GISObject);
 
      }
-    @Override
+  
     @RequestMapping(value ="/gis/getAllGISObjects")
     public  @ResponseBody List<GISDataObject> getAllGISDataObjects() 
     {   
         List<GISDataObject> objects = new ArrayList();
-        GISDataObject GISObject = new GISDataObject();
+        
     
-        int i = 0;  
+        int i = 1;  
         try {
+            
             Class.forName("org.postgresql.Driver");
             c = DriverManager.getConnection("jdbc:postgresql://localhost:5433/postgres","postgres", "root");
                 
-            stmt = c.createStatement();
+            stmt = c.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+            //stmt = c.prepareStatement("select * from " + "campus_buildings",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
             stmt.setMaxRows(100); // bacause of: org.postgresql.util.PSQLException: Ran out of memory retrieving query results.
             ResultSet rs = stmt.executeQuery("select * from " + "campus_buildings"); 
            
-            for (;;) {
-                while (rs.next()) {
-                    i++;
-                    
-                    GISObject.setObjectName(rs.getString("name"));
-                    GISObject.setGPSCoord(rs.getString("polygons"));
-                    objects.add(GISObject);
-                    
-                    // do something...
-                }
-                if ((stmt.getMoreResults() == false) && (stmt.getUpdateCount() == -1)) {
-                    break;
-                }           
+         
+            while (rs.next()) {
+
+                GISDataObject GISObject = new GISDataObject();
+                GISObject.setObjectName(rs.getString(2));
+                GISObject.setGPSCoord(rs.getString(3));
+                
+                objects.add(GISObject);
+                
+       
+
+                i++;
+
+
             }
-            id = i;
+            
+            for(int m=0; m< objects.size();m++)
+            {
+                //System.out.println("Building name: "+objects.get(m).getObjectName()+"  "+" Coordinates: "+objects.get(m).getGPSCoord());
+            }
+            
+                        
+        
+          id = i; 
         } catch (SQLException ex) {
             Logger.getLogger(GISController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -94,7 +106,7 @@ public class GISController implements GISModule
         }
         return objects;
     }
-    @Override
+  
     @RequestMapping(value ="/gis/getGISObjectByName")
     public  @ResponseBody GISDataObject  getGISObjectByName(String name)throws GISObjectNotFoundException
     {
@@ -113,7 +125,7 @@ public class GISController implements GISModule
             for (;;) {
                 while (rs.next()) {
                     i++;
-                    if(rs.getString("name")==name)
+                    if(rs.getString("name").equals(name))
                     {
                        GISObject.setObjectName(rs.getString("name"));
                        GISObject.setGPSCoord(rs.getString("polygons")); 
@@ -132,7 +144,7 @@ public class GISController implements GISModule
         }
         return GISObject;
     }
-    @Override
+
     @RequestMapping(value ="/gis/getGISObjectByCoordinates")
     public  @ResponseBody GISDataObject  getGISObjectByCoordinates(double lattitudes,double longitude)throws GISObjectNotFoundException
     {
@@ -154,7 +166,7 @@ public class GISController implements GISModule
                 while (rs.next()) {
                     i++;
                    
-                    if(rs.getString("polygons").toString() == coordinates)
+                    if(rs.getString("polygons").toString().equals(coordinates))
                     {
                        GISObject.setObjectName(rs.getString("name"));
                        GISObject.setGPSCoord(rs.getString("polygons")); 
@@ -173,7 +185,7 @@ public class GISController implements GISModule
         }
         return GISObject;
     }
-    @Override
+
     @RequestMapping(value ="/gis/getVenues")
     public  @ResponseBody List<String> getVenues(String buildingName)
     {
@@ -187,13 +199,14 @@ public class GISController implements GISModule
                 
             stmt = c.createStatement();
             stmt.setMaxRows(100); // bacause of: org.postgresql.util.PSQLException: Ran out of memory retrieving query results.
-            ResultSet rs = stmt.executeQuery("select * from " + "campus_buildings"); 
+           
+            ResultSet rs = stmt.executeQuery("select * from " + "lecture_halls"); 
            
             for (;;) {
                 while (rs.next()) {
                     i++;
                     
-                    if(rs.getString("building_name") == buildingName)
+                    if(rs.getString("building_name").equals(buildingName))
                     {
                         venues.add(rs.getString("room_name"));
                     }
@@ -212,16 +225,20 @@ public class GISController implements GISModule
         }
         return venues;
     }
-    @Override
     @RequestMapping(value ="/gis/getRoutes")
     public List<String> routesBetweenPoints(String pointACoordinates,String pointBCoordinates)
     {
        return null; 
     }
-    @Override
-    @RequestMapping(value ="/gis/getRoutes")
+    @RequestMapping(value ="/gis/getRoutesDetails")
     public String getRouteDetails(String route)
     {
        return null; 
+    }
+    @RequestMapping(value ="/gis/setID")
+    public void setID(int id)
+    {
+        
+        this.id = id;
     }
 }
