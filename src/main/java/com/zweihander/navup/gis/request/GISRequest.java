@@ -14,6 +14,7 @@ public class GISRequest
     {
         mGISDataObject = null;
     }
+    
     public GISDataObject getmGISDataObject() 
     {
         return mGISDataObject;

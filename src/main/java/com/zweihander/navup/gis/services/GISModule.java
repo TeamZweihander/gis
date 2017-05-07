@@ -13,7 +13,7 @@ public interface GISModule
     public GISResponse addGISDataObject(GISRequest request);
     public List<GISDataObject> getAllGISDataObjects();
     public GISDataObject getGISObjectByName(String name)throws GISObjectNotFoundException;;
-    public GISDataObject getGISObjectByCoordinates(double lattitude,double longitude)throws GISObjectNotFoundException;
+    public GISDataObject getGISObjectByCoordinates(String coordinates)throws GISObjectNotFoundException;
     public List<String> getVenues(String buildingName);
     public List<String> routesBetweenPoints(String pointACoordinates,String pointBCoordinates);
     public String getRouteDetails(String route);

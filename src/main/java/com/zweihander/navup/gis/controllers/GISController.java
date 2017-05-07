@@ -39,7 +39,7 @@ public class GISController implements GISModule
         try {
            
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5433/postgres","postgres", "root");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgis","postgres", "admin");
             stmt = c.createStatement();
             id++;
             
@@ -68,7 +68,7 @@ public class GISController implements GISModule
         try {
             
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5433/postgres","postgres", "root");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgis","postgres", "admin");
                 
             stmt = c.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
             //stmt = c.prepareStatement("select * from " + "campus_buildings",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
@@ -116,7 +116,7 @@ public class GISController implements GISModule
         int i = 0;  
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5433/postgres","postgres", "root");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgis","postgres", "admin");
                 
             stmt = c.createStatement();
             stmt.setMaxRows(100); // bacause of: org.postgresql.util.PSQLException: Ran out of memory retrieving query results.
@@ -146,17 +146,14 @@ public class GISController implements GISModule
     }
 
     @RequestMapping(value ="/gis/getGISObjectByCoordinates")
-    public  @ResponseBody GISDataObject  getGISObjectByCoordinates(double lattitudes,double longitude)throws GISObjectNotFoundException
+    public  @ResponseBody GISDataObject  getGISObjectByCoordinates(String coordinates)throws GISObjectNotFoundException
     {
-        GISDataObject GISObject = new GISDataObject();
-        
-        String coordinates = lattitudes+","+longitude;
-       
+        GISDataObject GISObject = new GISDataObject();       
         System.out.println(coordinates);
         int i = 0;  
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5433/postgres","postgres", "root");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgis","postgres", "admin");
                 
             stmt = c.createStatement();
             stmt.setMaxRows(100); // bacause of: org.postgresql.util.PSQLException: Ran out of memory retrieving query results.
@@ -195,7 +192,7 @@ public class GISController implements GISModule
         int i = 0;  
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5433/postgres","postgres", "root");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgis","postgres", "admin");
                 
             stmt = c.createStatement();
             stmt.setMaxRows(100); // bacause of: org.postgresql.util.PSQLException: Ran out of memory retrieving query results.

@@ -65,8 +65,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
-	            "postgres", "root");
+	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
+	            "postgres", "admin");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE BUILD " +
@@ -128,8 +128,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
-	            "postgres", "root");
+	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
+	            "postgres", "admin");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE BUILDING_ENTRANCES " +
@@ -190,8 +190,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
-	            "postgres", "root");
+	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
+	            "postgres", "admin");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE CAMPUS_BUILDINGS " +
@@ -255,8 +255,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
-	            "postgres", "root");
+	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
+	            "postgres", "admin");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE LECTURE_HALLS " +
@@ -324,8 +324,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
-	            "postgres", "root");
+	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
+	            "postgres", "admin");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE LECTURE_HALLS " +
@@ -393,8 +393,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
-	            "postgres", "root");
+	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
+	            "postgres", "admin");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE STAIRS " +
@@ -462,8 +462,8 @@ public class GisApplication {
 	       try {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
-	            .getConnection("jdbc:postgresql://localhost:5433/postgres",
-	            "postgres", "root");
+	            .getConnection("jdbc:postgresql://localhost:5432/postgis",
+	            "postgres", "admin");
 	         System.out.println("Opened database successfully");
 	         stmt = c.createStatement();
 	         String sql = "CREATE TABLE LECTURE_WALLS " +
@@ -506,7 +506,7 @@ public class GisApplication {
             
             // Populate the GIS database in bulk from csv files 
             
-            populateDatabase();
+//            populateDatabase();
                 
                 
                 
@@ -552,7 +552,7 @@ public class GisApplication {
             
             // Search for GIS object by coordinates 
            
-            building2 = controller.getGISObjectByCoordinates(28.2322615, -25.7550149);
+            building2 = controller.getGISObjectByCoordinates("28.2322615, -25.7550149");
             System.out.println("Building name after search by coordinates: " +building2.getObjectName());
             
             System.out.println("Please enter building name: ");
